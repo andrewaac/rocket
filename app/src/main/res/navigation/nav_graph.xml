@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.andrewaac.rocket.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_launchListFragment"
+            app:destination="@id/launchListFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_up_away" />
+    </fragment>
+    <fragment
+        android:id="@+id/launchListFragment"
+        android:name="com.andrewaac.rocket.LaunchListFragment"
+        android:label="fragment_launch_list"
+        tools:layout="@layout/fragment_launch_list" />
+</navigation>
