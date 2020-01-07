@@ -14,7 +14,10 @@
             android:id="@+id/action_splashFragment_to_launchListFragment"
             app:destination="@id/launchListFragment"
             app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/slide_up_away" />
+            app:exitAnim="@anim/slide_up_away"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/launchListFragment"
