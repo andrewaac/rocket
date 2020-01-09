@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/launchListFragment"
-        android:name="com.andrewaac.rocket.LaunchListFragment"
+        android:name="com.andrewaac.rocket.launches.LaunchListFragment"
         android:label="fragment_launch_list"
         tools:layout="@layout/fragment_launch_list" />
 </navigation>
