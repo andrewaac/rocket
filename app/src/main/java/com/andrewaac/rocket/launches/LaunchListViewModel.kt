@@ -1,10 +1,13 @@
 package com.andrewaac.rocket.launches
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andrewaac.rocket.RocketApplication
 import com.andrewaac.rocket.api.RetrofitFactory
 import com.andrewaac.rocket.api.SpaceXService
+import com.andrewaac.rocket.db.launch.Launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,9 +22,15 @@ class LaunchListViewModel : ViewModel() {
     }
 
     private var spaceXService = RetrofitFactory.instance.create(SpaceXService::class.java)
+    private var launchList = RocketApplication.db?.launchDao()?.getAllLaunches()
+
 
     init {
         getLaunches()
+    }
+
+    fun getLaunchList(): LiveData<List<Launch>>? {
+        return launchList
     }
 
     private fun getLaunches() {
@@ -37,6 +46,7 @@ class LaunchListViewModel : ViewModel() {
                         response: Response<List<Launch>>
                     ) {
                         val launches = response.body() as List<Launch>
+                        RocketApplication.db?.launchDao()?.addLaunch(launches)
                         for (launch in launches) {
                             Log.d(TAG, "$launch")
                         }

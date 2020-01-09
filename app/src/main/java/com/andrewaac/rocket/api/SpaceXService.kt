@@ -1,6 +1,6 @@
 package com.andrewaac.rocket.api
 
-import com.andrewaac.rocket.launches.Launch
+import com.andrewaac.rocket.db.launch.Launch
 import retrofit2.Call
 import retrofit2.http.GET
 
