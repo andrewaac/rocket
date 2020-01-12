@@ -9,6 +9,7 @@ import com.andrewaac.rocket.api.RetrofitFactory
 import com.andrewaac.rocket.api.SpaceXService
 import com.andrewaac.rocket.db.launch.Launch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -36,6 +37,7 @@ class LaunchListViewModel : ViewModel() {
     private fun getLaunches() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                delay(2000)
                 spaceXService.getLaunches().enqueue(object : Callback<List<Launch>> {
                     override fun onFailure(call: Call<List<Launch>>, t: Throwable) {
                         Log.e(TAG, "Something went wrong getting the launches: ${t.message}")
@@ -47,9 +49,6 @@ class LaunchListViewModel : ViewModel() {
                     ) {
                         val launches = response.body() as List<Launch>
                         RocketApplication.db?.launchDao()?.addLaunch(launches)
-                        for (launch in launches) {
-                            Log.d(TAG, "$launch")
-                        }
                     }
 
                 })

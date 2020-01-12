@@ -5,10 +5,15 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.andrewaac.rocket.R
+import kotlinx.android.synthetic.main.fragment_launch_list.*
+import kotlinx.coroutines.delay
 
 class LaunchListFragment : Fragment() {
 
@@ -29,9 +34,11 @@ class LaunchListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         launchListViewModel.getLaunchList()?.observe(this, Observer {
-            for (launch in it) {
-                Log.d(TAG, "$launch")
-            }
+            launches_recycler.layoutAnimation =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
+            launches_recycler.layoutManager = LinearLayoutManager(context)
+            launches_recycler.adapter = LaunchesAdapter(it)
+            progress_bar.visibility = GONE
         })
     }
 

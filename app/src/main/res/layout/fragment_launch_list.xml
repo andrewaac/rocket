@@ -20,6 +20,7 @@
         tools:ignore="ContentDescription" />
 
     <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:indeterminate="true"
@@ -31,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/launches_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
