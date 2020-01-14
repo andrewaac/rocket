@@ -1,14 +1,18 @@
 package com.andrewaac.rocket.launches
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.andrewaac.rocket.BR
 import com.andrewaac.rocket.R
+import com.andrewaac.rocket.databinding.ViewholderRocketLaunchBinding
 import com.andrewaac.rocket.db.launch.Launch
-import com.andrewaac.rocket.utils.TimeUtils
 
 class LaunchesAdapter :
     RecyclerView.Adapter<LaunchViewHolder>() {
@@ -20,10 +24,14 @@ class LaunchesAdapter :
     private var launchList: ArrayList<Launch> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaunchViewHolder {
-        val view =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.viewholder_rocket_launch, parent, false)
-        return LaunchViewHolder(view)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemBinding = DataBindingUtil.inflate<ViewholderRocketLaunchBinding>(
+            layoutInflater,
+            R.layout.viewholder_rocket_launch,
+            parent,
+            false
+        )
+        return LaunchViewHolder(itemBinding)
     }
 
     override fun getItemCount(): Int {
@@ -82,23 +90,20 @@ class LaunchDiffUtilCallback(var oldList: List<Launch>, var newList: List<Launch
 
 }
 
-class LaunchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-    companion object {
-        const val TAG = "LaunchViewHolder"
-    }
-
-    private val missionTitle = view.findViewById<TextView>(R.id.mission_name)
-    private val launchSite = view.findViewById<TextView>(R.id.site_name)
-    private val missionDate = view.findViewById<TextView>(R.id.mission_date)
-    private val missionDetails = view.findViewById<TextView>(R.id.mission_details)
+class LaunchViewHolder(private val itemBinding: ViewDataBinding) :
+    RecyclerView.ViewHolder(itemBinding.root) {
 
     fun bind(launch: Launch) {
-        missionTitle.text = launch.mission_name ?: "N/A"
-        launchSite.text = launch.launch_site?.site_name ?: "N/A"
-        missionDate.text =
-            launch.launch_date_utc?.let { TimeUtils.beautify(it) } ?: kotlin.run { "N/A" }
-        missionDetails.text = launch.details ?: "N/A"
+        itemBinding.setVariable(BR.launch, launch)
     }
+}
 
+@BindingAdapter("launch_information")
+fun TextView.bindLaunchInformation(inputString: String?) {
+    text = inputString ?: "N/A"
+}
+
+@BindingAdapter("launch_information")
+fun TextView.bindLaunchSuccess(successful: Boolean) {
+    text = if (successful) "Successful" else "Failure"
 }

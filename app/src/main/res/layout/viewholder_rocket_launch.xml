@@ -1,128 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:background="@drawable/bg_space">
 
-    <androidx.cardview.widget.CardView
+<layout>
+
+    <data>
+
+        <variable
+            name="launch"
+            type="com.andrewaac.rocket.db.launch.Launch" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:elevation="4dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        tools:background="@drawable/bg_space">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:padding="8dp">
+            android:layout_margin="16dp"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
-            <TextView
-                android:id="@+id/mission_name"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-medium"
-                android:lines="1"
-                android:textColor="#666666"
-                android:textSize="24sp"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toStartOf="@+id/successful_card"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="MissionA" />
-
-            <TextView
-                android:id="@+id/site_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mission_name"
-                tools:text="Site Name" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/successful_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/positive"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="2dp"
-                app:layout_constraintBottom_toBottomOf="@id/mission_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/mission_name"
-                app:layout_constraintTop_toTopOf="@id/mission_name">
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/successful_result"
+                    android:id="@+id/mission_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="Successful"
-                    android:textColor="#FFFFFF"
-                    android:textSize="8sp" />
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
+                    android:lines="1"
+                    android:textColor="#666666"
+                    android:textSize="24sp"
+                    app:launch_information="@{launch.mission_name}"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toStartOf="@+id/successful_card"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="MissionA" />
 
-            </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/site_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:launch_information="@{launch.launch_site.site_name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mission_name"
+                    tools:text="Site Name" />
 
-            <ImageView
-                android:id="@+id/icon_date"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_date"
-                android:tint="#666666"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/site_name" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/successful_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:cardBackgroundColor="@color/positive"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="@id/mission_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/mission_name"
+                    app:layout_constraintTop_toTopOf="@id/mission_name">
 
-            <TextView
-                android:id="@+id/mission_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingStart="4dp"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/icon_date"
-                app:layout_constraintTop_toTopOf="@id/icon_date"
-                tools:text="12/12/20" />
+                    <TextView
+                        android:id="@+id/successful_result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="8sp"
+                        app:launch_information="@{launch.launch_success}" />
 
-            <ImageView
-                android:id="@+id/icon_about"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_about"
-                android:tint="#666666"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/icon_date" />
+                </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/mission_details"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:maxLines="2"
-                android:paddingStart="4dp"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/icon_about"
-                app:layout_constraintTop_toTopOf="@id/icon_about"
-                tools:text="This is fake information about the rocket launch to fill out the view holder. It never took off an now aliens are coming to get us! uh oh, 2020 is not the year" />
+                <ImageView
+                    android:id="@+id/icon_date"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_date"
+                    android:tint="#666666"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/site_name" />
+
+                <TextView
+                    android:id="@+id/mission_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingStart="4dp"
+                    android:textSize="12sp"
+                    app:launch_information="@{launch.launch_date_utc}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/icon_date"
+                    app:layout_constraintTop_toTopOf="@id/icon_date"
+                    tools:text="12/12/20" />
+
+                <ImageView
+                    android:id="@+id/icon_about"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_about"
+                    android:tint="#666666"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon_date" />
+
+                <TextView
+                    android:id="@+id/mission_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:maxLines="2"
+                    android:paddingStart="4dp"
+                    android:textSize="12sp"
+                    app:launch_information="@{launch.details}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/icon_about"
+                    app:layout_constraintTop_toTopOf="@id/icon_about"
+                    tools:text="This is fake information about the rocket launch to fill out the view holder. It never took off an now aliens are coming to get us! uh oh, 2020 is not the year" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
-</FrameLayout>
+    </FrameLayout>
+
+</layout>
