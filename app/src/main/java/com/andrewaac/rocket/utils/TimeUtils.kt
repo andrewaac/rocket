@@ -16,7 +16,7 @@ class TimeUtils {
             utcDateFormat.parse(UTCString)?.let {
                 val simpleDateFormat =
                     SimpleDateFormat.getDateInstance(DateFormat.SHORT)
-                return simpleDateFormat.format(it)
+                return simpleDateFormat.format(it).replace('/', '-')
             } ?: kotlin.run {
                 return "N/A"
             }
