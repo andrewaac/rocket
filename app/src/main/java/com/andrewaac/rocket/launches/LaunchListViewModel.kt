@@ -2,6 +2,7 @@ package com.andrewaac.rocket.launches
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andrewaac.rocket.RocketApplication
@@ -24,17 +25,18 @@ class LaunchListViewModel : ViewModel() {
 
     private var spaceXService = RetrofitFactory.instance.create(SpaceXService::class.java)
     private var launchList = RocketApplication.db?.launchDao()?.getAllLaunches()
-
-
-    init {
-        getLaunches()
-    }
+    private var filteredList = MutableLiveData<List<Launch>>()
 
     fun getLaunchList(): LiveData<List<Launch>>? {
         return launchList
     }
 
-    private fun getLaunches() {
+    fun getFilteredList(): LiveData<List<Launch>> {
+        return filteredList
+    }
+
+    fun getLaunches() {
+        Log.d(TAG, "Getting launches")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 delay(2000)
@@ -52,6 +54,26 @@ class LaunchListViewModel : ViewModel() {
                     }
 
                 })
+            }
+        }
+    }
+
+    fun filterListByCompleted() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                filteredList.postValue(RocketApplication.db?.launchDao()?.getSuccessfulLaunches())
+            }
+        }
+    }
+
+    fun orderListByCompleted() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                launchList?.value?.let {
+                    val arrayList = ArrayList(it)
+                    arrayList.sortBy { launch -> launch.launch_date_utc }
+                    filteredList.postValue(arrayList)
+                }
             }
         }
     }

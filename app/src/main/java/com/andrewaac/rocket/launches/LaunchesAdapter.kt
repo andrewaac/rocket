@@ -1,5 +1,6 @@
 package com.andrewaac.rocket.launches
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -48,12 +49,17 @@ class LaunchesAdapter :
         payloads: MutableList<Any>
     ) {
         super.onBindViewHolder(holder, position, payloads)
+        Log.d(TAG, "Payloads size: ${payloads.size}")
         if (payloads.isNotEmpty()) {
             holder.bind(payloads[0] as Launch)
         }
     }
 
     fun updateLaunches(launchList: List<Launch>) {
+        Log.d(
+            TAG,
+            "Comparing our currentlist (${this.launchList.size}) to new list (${launchList.size})"
+        )
         val launchDiffUtilCallback =
             LaunchDiffUtilCallback(this.launchList, launchList)
         val diffResult = DiffUtil.calculateDiff(launchDiffUtilCallback)
@@ -63,7 +69,7 @@ class LaunchesAdapter :
     }
 }
 
-class LaunchDiffUtilCallback(var oldList: List<Launch>, var newList: List<Launch>) :
+class LaunchDiffUtilCallback(private var oldList: List<Launch>, private var newList: List<Launch>) :
     DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -96,14 +102,4 @@ class LaunchViewHolder(private val itemBinding: ViewDataBinding) :
     fun bind(launch: Launch) {
         itemBinding.setVariable(BR.launch, launch)
     }
-}
-
-@BindingAdapter("launch_information")
-fun TextView.bindLaunchInformation(inputString: String?) {
-    text = inputString ?: "N/A"
-}
-
-@BindingAdapter("launch_information")
-fun TextView.bindLaunchSuccess(successful: Boolean) {
-    text = if (successful) "Successful" else "Failure"
 }
