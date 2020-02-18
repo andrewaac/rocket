@@ -52,7 +52,6 @@ class LaunchListViewModel : ViewModel() {
                         val launches = response.body() as List<Launch>
                         RocketApplication.db?.launchDao()?.addLaunch(launches)
                     }
-
                 })
             }
         }

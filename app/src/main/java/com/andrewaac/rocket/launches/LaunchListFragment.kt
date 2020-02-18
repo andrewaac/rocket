@@ -19,14 +19,13 @@ import kotlinx.android.synthetic.main.fragment_launch_list.*
 class LaunchListFragment : Fragment(R.layout.fragment_launch_list) {
 
     companion object {
-        const val TAG = "LaunchListFragment"
+        const val ANIM_DURATION = 750L
     }
 
     private lateinit var launchListViewModel: LaunchListViewModel
     private var menuOpened = false
     private var launchListAdapter = LaunchesAdapter()
     private var launchesObserver = Observer<List<Launch>> {
-        Log.d(TAG, "New list of size: ${it.size}")
         if (it.isNotEmpty()) {
             launchListAdapter.updateLaunches(it)
             progress_bar.visibility = GONE
@@ -39,7 +38,6 @@ class LaunchListFragment : Fragment(R.layout.fragment_launch_list) {
         launchListViewModel.getLaunchList()?.observe(this, launchesObserver)
         launchListViewModel.getFilteredList().observe(this, launchesObserver)
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -63,17 +61,17 @@ class LaunchListFragment : Fragment(R.layout.fragment_launch_list) {
     }
 
     private fun openMenu() {
-//        by_completed.startAnimation(AnimUtils.getTopFABEnterAnimation())
-//        by_date.startAnimation(AnimUtils.getBottomFABEnterAnimation())
         val constraintSet = ConstraintSet()
         constraintSet.clone(context, R.layout.fragment_launch_list_expand)
         val transition: Transition = ChangeBounds().apply {
             interpolator = OvershootInterpolator()
-            duration = 750
+            duration = ANIM_DURATION
             addListener(object : Transition.TransitionListener {
                 override fun onTransitionEnd(transition: Transition) {
                     by_completed_label.visibility = VISIBLE
                     by_date_label.visibility = VISIBLE
+                    val launchesLoaded = launchListAdapter.itemCount > 0
+                    progress_bar.visibility = if (launchesLoaded) INVISIBLE else VISIBLE
                 }
 
                 override fun onTransitionResume(transition: Transition) {}
@@ -89,24 +87,21 @@ class LaunchListFragment : Fragment(R.layout.fragment_launch_list) {
     }
 
     private fun closeMenu() {
-//        by_completed.startAnimation(AnimUtils.getTopFABExitAnimation())
-//        by_date.startAnimation(AnimUtils.getBottomExitAnimation())
+        by_completed_label.visibility = INVISIBLE
+        by_date_label.visibility = INVISIBLE
         val constraintSet = ConstraintSet()
         constraintSet.clone(context, R.layout.fragment_launch_list)
         val transition: Transition = ChangeBounds().apply {
             interpolator = AnticipateInterpolator()
-            duration = 750
+            duration = ANIM_DURATION
             addListener(object : Transition.TransitionListener {
                 override fun onTransitionEnd(transition: Transition) {
-                    by_completed_label.visibility = INVISIBLE
-                    by_date_label.visibility = INVISIBLE
-                }
-
+                    val launchesLoaded = launchListAdapter.itemCount > 0
+                    progress_bar.visibility = if (launchesLoaded) INVISIBLE else VISIBLE}
                 override fun onTransitionResume(transition: Transition) {}
                 override fun onTransitionPause(transition: Transition) {}
                 override fun onTransitionCancel(transition: Transition) {}
                 override fun onTransitionStart(transition: Transition) {}
-
             })
         }
         TransitionManager.beginDelayedTransition(constraint_layout, transition)
